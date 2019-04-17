@@ -6,8 +6,20 @@
         xmlns:local="clr-namespace:RecordLibrary"
         xmlns:views="clr-namespace:RecordLibrary.Views"
         mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         Title="My Record Library" Height="450" Width="800">
-    <Grid>
-        <views:MainContent/>
-    </Grid>
+    <DockPanel>
+        <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                            Mode="PrimaryMid" DockPanel.Dock="Top">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22">Record Library</TextBlock>
+        </materialDesign:ColorZone>
+        <views:MainContent />
+    </DockPanel>
 </Window>

@@ -9,8 +9,14 @@ namespace RecordLibrary.ViewModels
 {
     public class RecordCollectionViewmModel : BindableBase
     {
+        #region Private Properties
+
         private LiteDatabase _LiteDatabase;
         private LiteCollection<Record> _Records;
+
+        #endregion Private Properties
+
+        #region Constructor and Public Members
 
         public RecordCollectionViewmModel()
         {
@@ -25,8 +31,11 @@ namespace RecordLibrary.ViewModels
 
         public void AddRecord(Record record)
         {
-            _Records.Insert(record);
-            RaisePropertyChanged(nameof(Records));
+            Task.Run(() =>
+            {
+                _Records.Insert(record);
+                RaisePropertyChanged(nameof(Records));
+            });
         }
 
         public void RemoveRecord(Record record)
@@ -42,5 +51,7 @@ namespace RecordLibrary.ViewModels
         {
             return Records.Any(i => i == record);
         }
+
+        #endregion Constructor and Public Members
     }
 }

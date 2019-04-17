@@ -22,12 +22,12 @@
         <StatusBar DockPanel.Dock="Bottom">
             <StackPanel  Orientation="Horizontal">
                 <TextBlock Margin="2, 0">Total Records:</TextBlock>
-                <TextBlock Text="{Binding Path=RecordCollection.Records.Count}"/>
+                <TextBlock Text="{Binding Path=DisplayRecords.Count}"/>
             </StackPanel>
         </StatusBar>
-            <DataGrid x:Name="DataGrid" ItemsSource="{Binding RecordCollection.Records, Mode=OneWay}" IsReadOnly="True" AutoGenerateColumns="False" SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <DataGrid x:Name="DataGrid" ItemsSource="{Binding DisplayRecords, Mode=OneWay}" IsReadOnly="True" AutoGenerateColumns="False" SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Artist" Binding="{Binding Artist}" />
+                <DataGridTextColumn Header="Artist" Binding="{Binding Artist}" SortDirection="Ascending" />
                     <DataGridTextColumn Header="Release Name" Binding="{Binding ReleaseName}" />
                     <DataGridTextColumn Header="Release Year" Binding="{Binding ReleaseYear}" />
                 </DataGrid.Columns>

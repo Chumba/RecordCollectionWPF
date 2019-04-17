@@ -2,6 +2,8 @@
 using Prism.Mvvm;
 using RecordLibrary.Models;
 using RecordLibrary.Views;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 
 namespace RecordLibrary.ViewModels
@@ -21,6 +23,14 @@ namespace RecordLibrary.ViewModels
             }
         }
 
+        public List<Record> DisplayRecords
+        {
+            get
+            {
+                return _RecordCollection.Records.Where(i => Filter(i)).ToList();
+            }
+        }
+
         private string _SearchText;
 
         public string SearchText
@@ -32,7 +42,7 @@ namespace RecordLibrary.ViewModels
             set
             {
                 SetProperty(ref _SearchText, value);
-                FilterOn(value);
+                RaisePropertyChanged(nameof(DisplayRecords));
             }
         }
 
@@ -57,6 +67,7 @@ namespace RecordLibrary.ViewModels
         public MainContentViewModel()
         {
             RecordCollection = new RecordCollectionViewmModel();
+            SearchText = "";
         }
 
         #endregion Constructor
@@ -121,8 +132,15 @@ namespace RecordLibrary.ViewModels
 
         #region Methods
 
-        private void FilterOn(string value)
+        private bool Filter(Record record)
         {
+            var searchText = SearchText.ToUpper();
+            return (
+                string.IsNullOrEmpty(SearchText) ||
+                record.Artist.ToUpper().Contains(searchText) ||
+                record.ReleaseName.ToUpper().Contains(searchText) ||
+                record.ReleaseYear.ToUpper().Contains(searchText)
+            );
         }
 
         #endregion Methods

@@ -72,6 +72,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\Record.cs" />
+    <Compile Include="ViewModels\RecordCollectionViewModel.cs" />
     <Compile Include="ViewModels\AddRecordFormViewModel.cs" />
     <Compile Include="ViewModels\MainContentViewModel.cs" />
     <Compile Include="Views\AddRecordForm.xaml.cs">

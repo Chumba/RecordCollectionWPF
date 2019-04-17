@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using RecordLibrary.Models;
 using RecordLibrary.Views;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 
@@ -68,6 +69,7 @@ namespace RecordLibrary.ViewModels
         {
             RecordCollection = new RecordCollectionViewmModel();
             SearchText = "";
+            RecordCollection.PropertyChanged += RecordCollection_PropertyChanged;
         }
 
         #endregion Constructor
@@ -141,6 +143,14 @@ namespace RecordLibrary.ViewModels
                 record.ReleaseName.ToUpper().Contains(searchText) ||
                 record.ReleaseYear.ToUpper().Contains(searchText)
             );
+        }
+
+        private void RecordCollection_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(RecordCollection.Records))
+            {
+                RaisePropertyChanged(nameof(DisplayRecords));
+            }
         }
 
         #endregion Methods

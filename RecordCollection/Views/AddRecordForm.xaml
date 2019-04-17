@@ -4,33 +4,42 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RecordLibrary.Views"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:prism="http://www.codeplex.com/prism"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
         mc:Ignorable="d"
-        Title="Add a Record" Height="450" Width="800">
-    <DockPanel LastChildFill="False">
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
-            <Button Margin="5" Command="{Binding OkCommand}" CommandParameter="{Binding ElementName=AddRecord}">OK</Button>
-            <Button Margin="5" Command="{Binding CancelCommand}">CANCEL</Button>
+        WindowStyle="ToolWindow"
+        Title="Add a Record" Height="400" Width="300">
+    <Grid Margin="16">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock>New Record:</TextBlock>
+        <TextBox x:Name="Artist" wpf:HintAssist.Hint="Artist" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                 Margin="0 6 0 0"
+                 FontSize="18" Grid.Row="1"/>
+        <TextBox x:Name="ReleaseName" wpf:HintAssist.Hint="Release Name" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                 Margin="0 8 0 0"
+                 FontSize="16" Grid.Row="2" />
+        <TextBox x:Name="ReleaseYear" wpf:HintAssist.Hint="Release Year" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                 Margin="0 8 0 0"
+                 FontSize="16" Grid.Row="3" />
+        <StackPanel Orientation="Horizontal" Grid.Row="4"
+                    Margin="0 16 0 0">
+            <Button IsDefault="True" Style="{DynamicResource MaterialDesignFlatButton}"
+                    Command="{Binding OkCommand}" CommandParameter="{Binding ElementName=AddRecord}">
+                OK
+            </Button>
+            <Button IsCancel="True" Margin="8 0 0 0" Style="{DynamicResource MaterialDesignFlatButton}"
+                    Command="{Binding CancelCommand}">
+                CANCEL
+            </Button>
         </StackPanel>
-        
-        <Grid Margin="20, 20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="200" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="20" />
-                <RowDefinition Height="20" />
-                <RowDefinition Height="20" />
-            </Grid.RowDefinitions>
-            <TextBlock Text="Artist" Grid.Column="0" Grid.Row="0"/>
-            <TextBox x:Name="Artist" Grid.Column="1"  Grid.Row="0"  />
-            <TextBlock Text="Release Name" Grid.Column="0"  Grid.Row="1"/>
-            <TextBox x:Name="ReleaseName" Grid.Column="1"  Grid.Row="1"/>
-            <TextBlock Text="Release Year" Grid.Column="0" Grid.Row="2"/>
-            <TextBox x:Name="ReleaseYear" Grid.Column="1"  Grid.Row="2"/>
-        </Grid>
-        
-    </DockPanel>
-    
+    </Grid>
 </Window>

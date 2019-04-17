@@ -1,10 +1,7 @@
-﻿using LiteDB;
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Mvvm;
-using RecordCollection.Views;
 using RecordLibrary.Models;
-using System.Collections.Generic;
-using System.Linq;
+using RecordLibrary.Views;
 using System.Windows.Input;
 
 namespace RecordLibrary.ViewModels
@@ -13,9 +10,9 @@ namespace RecordLibrary.ViewModels
     {
         #region Public Properties
 
-        private List<Record> _RecordCollection;
+        private RecordCollectionViewmModel _RecordCollection;
 
-        public List<Record> RecordCollection
+        public RecordCollectionViewmModel RecordCollection
         {
             get => _RecordCollection;
             set
@@ -39,17 +36,27 @@ namespace RecordLibrary.ViewModels
             }
         }
 
+        private Record _SelectedItemt;
+
+        public Record SelectedItem
+        {
+            get
+            {
+                return _SelectedItemt;
+            }
+            set
+            {
+                SetProperty(ref _SelectedItemt, value);
+            }
+        }
+
         #endregion Public Properties
 
         #region Constructor
 
         public MainContentViewModel()
         {
-            using (var db = new LiteDatabase(@"MyData.db"))
-            {
-                var Records = db.GetCollection<Record>("Records");
-                _RecordCollection = Records.FindAll().ToList();
-            }
+            RecordCollection = new RecordCollectionViewmModel();
         }
 
         #endregion Constructor
@@ -67,7 +74,7 @@ namespace RecordLibrary.ViewModels
                 if (_AddRecordCommand == null)
                 {
                     _AddRecordCommand = new DelegateCommand(() => AddRecord(),
-                                                            () => CanAddRecord());
+                                                            () => true);
                 }
                 return _AddRecordCommand;
             }
@@ -75,19 +82,8 @@ namespace RecordLibrary.ViewModels
 
         private void AddRecord()
         {
-            var win = new AddRecordForm();
-            win.Show();
-            win.Closed += Win_Closed;
-        }
-
-        private void Win_Closed(object sender, System.EventArgs e)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private bool CanAddRecord()
-        {
-            return true;
+            var newRecordForm = new AddRecordForm(RecordCollection);
+            newRecordForm.Show();
         }
 
         #endregion Add Record Command
@@ -102,20 +98,21 @@ namespace RecordLibrary.ViewModels
             {
                 if (_RemoveRecordCommand == null)
                 {
-                    _RemoveRecordCommand = new DelegateCommand(() => RemoveRecord(),
-                                                            () => CanRemoveRecord());
+                    _RemoveRecordCommand = new DelegateCommand<Record>((Record) => RemoveRecord(Record),
+                                                            (Record) => CanRemoveRecord(Record)).ObservesProperty(() => SelectedItem); ;
                 }
                 return _RemoveRecordCommand;
             }
         }
 
-        private void RemoveRecord()
+        private void RemoveRecord(Record record)
         {
+            _RecordCollection.RemoveRecord(record);
         }
 
-        private bool CanRemoveRecord()
+        private bool CanRemoveRecord(Record record)
         {
-            return false;
+            return record != null;
         }
 
         #endregion Remove Record Command

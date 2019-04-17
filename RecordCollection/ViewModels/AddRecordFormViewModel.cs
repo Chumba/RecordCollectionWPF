@@ -1,17 +1,19 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RecordLibrary.Models;
+using RecordLibrary.Views;
 using System.Windows.Input;
 
-namespace RecordCollection.ViewModels
+namespace RecordLibrary.ViewModels
 {
     public class AddRecordFormViewModel : BindableBase
     {
-        public AddRecordFormViewModel() { }
+        private RecordCollectionViewmModel _RecordCollection;
+
+        public AddRecordFormViewModel(RecordCollectionViewmModel recordCollection)
+        {
+            _RecordCollection = recordCollection;
+        }
 
         #region Commands
 
@@ -25,21 +27,22 @@ namespace RecordCollection.ViewModels
             {
                 if (_OkCommand == null)
                 {
-                    _OkCommand = new DelegateCommand(() => Ok(),
-                                                            () => CanOk());
+                    _OkCommand = new DelegateCommand<AddRecordForm>((AddRecordForm) => Ok(AddRecordForm),
+                                                     (AddRecordForm) => true);
                 }
                 return _OkCommand;
             }
         }
 
-        private void Ok()
+        private void Ok(AddRecordForm window)
         {
-           
-        }
-
-        private bool CanOk()
-        {
-            return true;
+            _RecordCollection.AddRecord(new Record()
+            {
+                Artist = window.Artist.Text,
+                ReleaseName = window.ReleaseName.Text,
+                ReleaseYear = window.ReleaseYear.Text
+            });
+            window.Close();
         }
 
         #endregion Add Record Command
@@ -54,26 +57,20 @@ namespace RecordCollection.ViewModels
             {
                 if (_CancelCommand == null)
                 {
-                    _CancelCommand = new DelegateCommand(() => Cancel(),
-                                                            () => CanCancel());
+                    _CancelCommand = new DelegateCommand<AddRecordForm>((AddRecordForm) => Cancel(AddRecordForm),
+                                                            (AddRecordForm) => true);
                 }
                 return _CancelCommand;
             }
         }
 
-        private void Cancel()
+        private void Cancel(AddRecordForm window)
         {
-            
-        }
-
-        private bool CanCancel()
-        {
-            return true;
+            window.Close();
         }
 
         #endregion Remove Record Command
 
         #endregion Commands
-
     }
 }

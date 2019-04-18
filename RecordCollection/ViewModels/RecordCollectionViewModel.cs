@@ -1,6 +1,7 @@
 ﻿using LiteDB;
 using Prism.Mvvm;
 using RecordLibrary.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace RecordLibrary.ViewModels
 
         private LiteDatabase _LiteDatabase;
         private LiteCollection<Record> _Records;
+        private Random _Random;
 
         #endregion Private Properties
 
@@ -22,6 +24,7 @@ namespace RecordLibrary.ViewModels
         {
             _LiteDatabase = new LiteDatabase(@"MyData.db");
             _Records = _LiteDatabase.GetCollection<Record>("Records");
+            _Random = new Random((int)DateTime.Now.Ticks);
         }
 
         public List<Record> Records
@@ -50,6 +53,12 @@ namespace RecordLibrary.ViewModels
         public bool ContainsRecord(Record record)
         {
             return Records.Any(i => i == record);
+        }
+
+        public Record Shuffle()
+        {
+            int random = _Random.Next(0, Records.Count());            
+            return Records.ElementAt(random);
         }
 
         #endregion Constructor and Public Members

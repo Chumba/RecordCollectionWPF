@@ -14,7 +14,8 @@
             <StackPanel Orientation="Horizontal" Margin="5">
                 <Button Command="{Binding AddRecordCommand}" Margin="2, 0">Add</Button>
                 <Button Command="{Binding RemoveRecordCommand}" CommandParameter="{Binding SelectedItem, ElementName=DataGrid}" Margin="2, 0">Remove</Button>
-                <TextBox VerticalAlignment="Center" Width="200" Margin="2, 0" materialDesign:HintAssist.Hint="Search"
+                <Button Command="{Binding ImportCommand}" Margin="2, 0">Import</Button>
+                <TextBox VerticalAlignment="Center" Width="200" Margin="15, 0" materialDesign:HintAssist.Hint="Search"
                         Text="{Binding Path=SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
             </StackPanel>
         </materialDesign:ColorZone>
@@ -40,7 +41,7 @@
                                     Command="{Binding PickARecordCommand}"
                                     VerticalAlignment="Bottom" HorizontalAlignment="Right" 
                                     Grid.Row="0" Margin="0 0 28 10">
-                <materialDesign:PackIcon Kind="Plus" Height="22" Width="22"/>
+                <materialDesign:PackIcon Kind="Shuffle" Height="22" Width="22"/>
             </Button>
         </Grid>
        

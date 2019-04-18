@@ -130,7 +130,7 @@ namespace RecordLibrary.ViewModels
 
         #endregion Remove Record Command
 
-        #region Add Record Command
+        #region Pick A Record Command
 
         private ICommand _PickARecordCommand;
 
@@ -149,10 +149,36 @@ namespace RecordLibrary.ViewModels
 
         private void PickARecord()
         {
-            //STUB
+            var randomRecordForm = new RandomRecordForm(RecordCollection);
+            randomRecordForm.Show();
         }
 
-        #endregion Add Record Command
+        #endregion Pick A Region Command
+
+        #region ImportCommand
+
+        private ICommand _ImportCommand;
+
+        public ICommand ImportCommand
+        {
+            get
+            {
+                if (_ImportCommand == null)
+                {
+                    _ImportCommand = new DelegateCommand(() => Import(),
+                                                            () => true);
+                }
+                return _ImportCommand;
+            }
+        }
+
+        private void Import()
+        {
+            var importForm = new ImportForm(RecordCollection);
+            importForm.Show();
+        }
+
+        #endregion Pick A Region Command
 
         #endregion Commands
 

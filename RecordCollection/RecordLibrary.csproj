@@ -78,6 +78,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\Record.cs" />
+    <Compile Include="ViewModels\RandomRecordFormViewModel.cs" />
     <Compile Include="ViewModels\RecordCollectionViewModel.cs" />
     <Compile Include="ViewModels\AddRecordFormViewModel.cs" />
     <Compile Include="ViewModels\MainContentViewModel.cs" />
@@ -86,6 +87,9 @@
     </Compile>
     <Compile Include="Views\MainContent.xaml.cs">
       <DependentUpon>MainContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RandomRecordForm.xaml.cs">
+      <DependentUpon>RandomRecordForm.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -104,6 +108,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RandomRecordForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,11 +1,11 @@
 # RecordCollectionWPF
 A simple WPF based Record Collection Manager.
 
-![Alt text](https://raw.githubusercontent.com/Chumba/RecordCollectionWPF/master/screenshots/mainview.png "Main View")
+![Alt text](https://raw.githubusercontent.com/Chumba/RecordCollectionWPF/master/Screenshots/MainView.png "Main View")
 
 Lets you manage your collection, import your collection from another service, and when you're feeling indecisive a shuffle button to pick a Record for you.
 
-![Alt text](https://raw.githubusercontent.com/Chumba/RecordCollectionWPF/master/screenshots/randomrecord.png "Random Record")
+![Alt text](https://raw.githubusercontent.com/Chumba/RecordCollectionWPF/master/Screenshots/RandomRecord.png "Random Record")
 
 # Source Code
 

@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using RecordLibrary.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -57,8 +58,30 @@ namespace RecordLibrary.ViewModels
 
         public Record Shuffle()
         {
-            int random = _Random.Next(0, Records.Count());            
+            int random = _Random.Next(0, Records.Count());
             return Records.ElementAt(random);
+        }
+
+        public void Import(string path)
+        {
+            var newEntries = new List<Record>();
+            using (var reader = new StreamReader(path))
+            {
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var values = line.Split(',');
+
+                    newEntries.Add(new Record
+                    {
+                        Artist = values[0],
+                        ReleaseName = values[1],
+                        ReleaseYear = values[2]
+                    });
+                }
+            }
+            _Records.InsertBulk(newEntries);
+            RaisePropertyChanged(nameof(Records));
         }
 
         #endregion Constructor and Public Members

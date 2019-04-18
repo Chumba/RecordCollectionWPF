@@ -5,19 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RecordLibrary.Views"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        mc:Ignorable="d"
-        ResizeMode="NoResize"
+        mc:Ignorable="d"        
         WindowStyle="ToolWindow"
-        Title="RandomRecordForm" Height="280" Width="280">
-    <materialDesign:ColorZone Mode="PrimaryLight">
+        Title="Pick A Record" Height="280" Width="430">
+    <materialDesign:ColorZone Mode="Standard">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="90" />
                 <RowDefinition Height="90" />
                 <RowDefinition Height="100" />
             </Grid.RowDefinitions>
-            <TextBlock Text="{Binding Artist}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Grid.Row="0" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
-            <TextBlock Text="{Binding ReleaseName}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+            <TextBlock Text="{Binding Artist}" Margin="15" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Grid.Row="0" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+            <TextBlock Text="{Binding ReleaseName}" Margin="15" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
             <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
                                     Command="{Binding ShuffleCommand}"
                                     VerticalAlignment="Bottom" HorizontalAlignment="Right"

@@ -1,7 +1,9 @@
-﻿using Prism.Commands;
+﻿using Microsoft.Win32;
+using Prism.Commands;
 using Prism.Mvvm;
 using RecordLibrary.Models;
 using RecordLibrary.Views;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -174,8 +176,13 @@ namespace RecordLibrary.ViewModels
 
         private void Import()
         {
-            var importForm = new ImportForm(RecordCollection);
-            importForm.Show();
+            OpenFileDialog openFileDlg = new OpenFileDialog();
+            openFileDlg.Filter = "CSV documents (.csv)|*.csv";
+            Nullable<bool> result = openFileDlg.ShowDialog();
+            if (result == true)
+            {
+                _RecordCollection.Import(openFileDlg.FileName);
+            }
         }
 
         #endregion Pick A Region Command

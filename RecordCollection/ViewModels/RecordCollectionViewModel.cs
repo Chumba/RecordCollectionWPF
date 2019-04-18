@@ -84,7 +84,7 @@ namespace RecordLibrary.ViewModels
                 }
                 _Records.InsertBulk(newEntries);
                 RaisePropertyChanged(nameof(Records));
-            });           
+            });
         }
 
         #endregion Constructor and Public Members

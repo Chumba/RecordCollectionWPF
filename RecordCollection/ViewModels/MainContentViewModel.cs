@@ -155,7 +155,7 @@ namespace RecordLibrary.ViewModels
             randomRecordForm.Show();
         }
 
-        #endregion Pick A Region Command
+        #endregion Pick A Record Command
 
         #region ImportCommand
 
@@ -185,7 +185,7 @@ namespace RecordLibrary.ViewModels
             }
         }
 
-        #endregion Pick A Region Command
+        #endregion ImportCommand
 
         #endregion Commands
 

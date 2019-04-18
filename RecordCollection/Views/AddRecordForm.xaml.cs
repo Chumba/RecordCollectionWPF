@@ -1,5 +1,4 @@
-﻿using RecordLibrary.Models;
-using RecordLibrary.ViewModels;
+﻿using RecordLibrary.ViewModels;
 using System.Windows;
 
 namespace RecordLibrary.Views

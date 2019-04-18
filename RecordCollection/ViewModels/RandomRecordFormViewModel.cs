@@ -13,7 +13,7 @@ namespace RecordLibrary.ViewModels
             _RecordCollection = recordCollection;
             Shuffle();
         }
-        
+
         private void Shuffle()
         {
             var record = _RecordCollection.Shuffle();
@@ -44,15 +44,18 @@ namespace RecordLibrary.ViewModels
         }
 
         private ICommand _ShuffleCommand;
+
         public ICommand ShuffleCommand
         {
             get
             {
-                if(_ShuffleCommand == null)
+                if (_ShuffleCommand == null)
+                {
                     _ShuffleCommand = new DelegateCommand(() => Shuffle(), () => true);
+                }
+
                 return _ShuffleCommand;
             }
         }
-
     }
 }

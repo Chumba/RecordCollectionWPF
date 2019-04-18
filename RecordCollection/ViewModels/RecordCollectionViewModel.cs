@@ -64,24 +64,27 @@ namespace RecordLibrary.ViewModels
 
         public void Import(string path)
         {
-            var newEntries = new List<Record>();
-            using (var reader = new StreamReader(path))
+            Task.Run(() =>
             {
-                while (!reader.EndOfStream)
+                var newEntries = new List<Record>();
+                using (var reader = new StreamReader(path))
                 {
-                    var line = reader.ReadLine();
-                    var values = line.Split(',');
-
-                    newEntries.Add(new Record
+                    while (!reader.EndOfStream)
                     {
-                        Artist = values[0],
-                        ReleaseName = values[1],
-                        ReleaseYear = values[2]
-                    });
+                        var line = reader.ReadLine();
+                        var values = line.Split(',');
+
+                        newEntries.Add(new Record
+                        {
+                            Artist = values[0],
+                            ReleaseName = values[1],
+                            ReleaseYear = values[2]
+                        });
+                    }
                 }
-            }
-            _Records.InsertBulk(newEntries);
-            RaisePropertyChanged(nameof(Records));
+                _Records.InsertBulk(newEntries);
+                RaisePropertyChanged(nameof(Records));
+            });           
         }
 
         #endregion Constructor and Public Members

@@ -130,6 +130,30 @@ namespace RecordLibrary.ViewModels
 
         #endregion Remove Record Command
 
+        #region Add Record Command
+
+        private ICommand _PickARecordCommand;
+
+        public ICommand PickARecordCommand
+        {
+            get
+            {
+                if (_PickARecordCommand == null)
+                {
+                    _PickARecordCommand = new DelegateCommand(() => PickARecord(),
+                                                            () => true);
+                }
+                return _PickARecordCommand;
+            }
+        }
+
+        private void PickARecord()
+        {
+            //STUB
+        }
+
+        #endregion Add Record Command
+
         #endregion Commands
 
         #region Methods

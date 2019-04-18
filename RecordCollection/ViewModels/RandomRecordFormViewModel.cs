@@ -4,6 +4,9 @@ using System.Windows.Input;
 
 namespace RecordLibrary.ViewModels
 {
+    /// <summary>
+    /// Interaction logic for the Random Record form view
+    /// </summary>
     public class RandomRecordFormViewModel : BindableBase
     {
         private RecordCollectionViewmModel _RecordCollection;

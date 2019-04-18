@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace RecordLibrary.ViewModels
 {
+    /// <summary>
+    /// This class contains the data connection to the LiteDB data file and handles all create/delete/querying of the database.    ///
+    /// LiteDB works off of a RecordCollection.db file which will either be read from the working directory, or created if not present.
+    /// </summary>
     public class RecordCollectionViewmModel : BindableBase
     {
         #region Private Properties
@@ -23,16 +27,23 @@ namespace RecordLibrary.ViewModels
 
         public RecordCollectionViewmModel()
         {
-            _LiteDatabase = new LiteDatabase(@"MyData.db");
+            _LiteDatabase = new LiteDatabase(@"RecordCollection.db");
             _Records = _LiteDatabase.GetCollection<Record>("Records");
             _Random = new Random((int)DateTime.Now.Ticks);
         }
 
+        /// <summary>
+        /// The access point for outside clients to the data records
+        /// </summary>
         public List<Record> Records
         {
             get => _Records.FindAll().ToList();
         }
 
+        /// <summary>
+        /// Adds a record to the db
+        /// </summary>
+        /// <param name="record">The record to be added</param>
         public void AddRecord(Record record)
         {
             Task.Run(() =>
@@ -42,6 +53,10 @@ namespace RecordLibrary.ViewModels
             });
         }
 
+        /// <summary>
+        /// Removes a record from the db
+        /// </summary>
+        /// <param name="record">The record to be removed</param>
         public void RemoveRecord(Record record)
         {
             Task.Run(() =>
@@ -51,17 +66,33 @@ namespace RecordLibrary.ViewModels
             });
         }
 
+        /// <summary>
+        /// Tests whether a record is contained in the db
+        /// </summary>
+        /// <param name="record">The record to search for</param>
+        /// <returns>Boolean true if the record is present</returns>
         public bool ContainsRecord(Record record)
         {
             return Records.Any(i => i == record);
         }
 
+        /// <summary>
+        /// Returns a randomized record from the db
+        /// </summary>
+        /// <returns>A random Record object from the db.</returns>
         public Record Shuffle()
         {
             int random = _Random.Next(0, Records.Count());
             return Records.ElementAt(random);
         }
 
+        /// <summary>
+        /// Imports a CSV file into the DB, the CSV file should be formatted as
+        ///
+        /// Artist, ReleaseName, ReleaseYear
+        ///
+        /// </summary>
+        /// <param name="path">The path to a .csv file containing appropriate data.</param>
         public void Import(string path)
         {
             Task.Run(() =>

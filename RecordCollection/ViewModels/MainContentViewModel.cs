@@ -11,10 +11,16 @@ using System.Windows.Input;
 
 namespace RecordLibrary.ViewModels
 {
+    /// <summary>
+    /// Interaction logic for the main view of the library manager including the data grid and the commands for the buttons
+    /// </summary>
     public class MainContentViewModel : BindableBase
     {
         #region Public Properties
 
+        /// <summary>
+        /// This connects our view to the data service RecordCollection
+        /// </summary>
         private RecordCollectionViewmModel _RecordCollection;
 
         public RecordCollectionViewmModel RecordCollection
@@ -26,6 +32,9 @@ namespace RecordLibrary.ViewModels
             }
         }
 
+        /// <summary>
+        /// This list is what the datagrid binds to, it filters based on the search text box, and any other future filters
+        /// </summary>
         public List<Record> DisplayRecords
         {
             get
@@ -191,6 +200,11 @@ namespace RecordLibrary.ViewModels
 
         #region Methods
 
+        /// <summary>
+        /// Returns wether or not the record should be displayed based on current filter settings
+        /// </summary>
+        /// <param name="record">The record to be tested</param>
+        /// <returns>Boolean true if the record should be shown in the datagrid</returns>
         private bool Filter(Record record)
         {
             var searchText = SearchText.ToUpper();
@@ -202,6 +216,11 @@ namespace RecordLibrary.ViewModels
             );
         }
 
+        /// <summary>
+        /// Allows us to monitor the RecordLibrary records and update based on new/removed items
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e">PropertyChangedEventArgs</param>
         private void RecordCollection_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(RecordCollection.Records))

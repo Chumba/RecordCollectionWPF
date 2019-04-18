@@ -1,5 +1,8 @@
 ﻿namespace RecordLibrary.Models
 {
+    /// <summary>
+    /// Data model of a physical music entry into our collection
+    /// </summary>
     public class Record
     {
         public int Id { get; set; }

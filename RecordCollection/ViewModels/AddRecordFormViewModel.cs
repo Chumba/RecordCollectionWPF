@@ -6,6 +6,9 @@ using System.Windows.Input;
 
 namespace RecordLibrary.ViewModels
 {
+    /// <summary>
+    /// Interaction logic for the new record form
+    /// </summary>
     public class AddRecordFormViewModel : BindableBase
     {
         private RecordCollectionViewmModel _RecordCollection;

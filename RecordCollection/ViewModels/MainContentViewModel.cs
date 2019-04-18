@@ -4,9 +4,8 @@ using Prism.Mvvm;
 using RecordLibrary.Models;
 using RecordLibrary.Views;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace RecordLibrary.ViewModels
@@ -33,17 +32,13 @@ namespace RecordLibrary.ViewModels
         }
 
         /// <summary>
-        /// This list is what the datagrid binds to, it filters based on the search text box, and any other future filters
+        /// This CollectionViewSource/CollectionView is what the datagrid binds to, it filters based on the search text box, and any other future filters
         /// </summary>
-        public List<Record> DisplayRecords
-        {
-            get
-            {
-                return _RecordCollection.Records.Where(i => Filter(i)).ToList();
-            }
-        }
+        public CollectionViewSource ViewSource { get; set; }
 
-        private string _SearchText;
+        private Record _SelectedItem;
+
+        private string _SearchText = "";
 
         public string SearchText
         {
@@ -54,21 +49,19 @@ namespace RecordLibrary.ViewModels
             set
             {
                 SetProperty(ref _SearchText, value);
-                RaisePropertyChanged(nameof(DisplayRecords));
+                ViewSource.View.Refresh();
             }
         }
-
-        private Record _SelectedItemt;
 
         public Record SelectedItem
         {
             get
             {
-                return _SelectedItemt;
+                return _SelectedItem;
             }
             set
             {
-                SetProperty(ref _SelectedItemt, value);
+                SetProperty(ref _SelectedItem, value);
             }
         }
 
@@ -79,8 +72,14 @@ namespace RecordLibrary.ViewModels
         public MainContentViewModel()
         {
             RecordCollection = new RecordCollectionViewmModel();
-            SearchText = "";
-            RecordCollection.PropertyChanged += RecordCollection_PropertyChanged;
+            ViewSource = new CollectionViewSource();
+            ViewSource.Source = _RecordCollection.Records;
+            ViewSource.SortDescriptions.Add(new SortDescription(nameof(Record.Artist), ListSortDirection.Ascending));
+            ViewSource.SortDescriptions.Add(new SortDescription(nameof(Record.ReleaseYear), ListSortDirection.Ascending));
+            ViewSource.SortDescriptions.Add(new SortDescription(nameof(Record.ReleaseName), ListSortDirection.Ascending));
+            ViewSource.Filter += Filter;
+            ViewSource.View.Refresh();
+            SelectedItem = null;
         }
 
         #endregion Constructor
@@ -122,21 +121,22 @@ namespace RecordLibrary.ViewModels
             {
                 if (_RemoveRecordCommand == null)
                 {
-                    _RemoveRecordCommand = new DelegateCommand<Record>((Record) => RemoveRecord(Record),
-                                                            (Record) => CanRemoveRecord(Record)).ObservesProperty(() => SelectedItem); ;
+                    _RemoveRecordCommand = new DelegateCommand(() => RemoveSelectedRecord(),
+                                                            () => CanRemoveRecord()).ObservesProperty(() => SelectedItem); ;
                 }
                 return _RemoveRecordCommand;
             }
         }
 
-        private void RemoveRecord(Record record)
+        private void RemoveSelectedRecord()
         {
-            _RecordCollection.RemoveRecord(record);
+            _RecordCollection.RemoveRecord(SelectedItem);
+            SelectedItem = null;
         }
 
-        private bool CanRemoveRecord(Record record)
+        private bool CanRemoveRecord()
         {
-            return record != null;
+            return SelectedItem != null;
         }
 
         #endregion Remove Record Command
@@ -205,27 +205,16 @@ namespace RecordLibrary.ViewModels
         /// </summary>
         /// <param name="record">The record to be tested</param>
         /// <returns>Boolean true if the record should be shown in the datagrid</returns>
-        private bool Filter(Record record)
+        private void Filter(object sender, FilterEventArgs e)
         {
-            var searchText = SearchText.ToUpper();
-            return (
-                string.IsNullOrEmpty(SearchText) ||
-                record.Artist.ToUpper().Contains(searchText) ||
-                record.ReleaseName.ToUpper().Contains(searchText) ||
-                record.ReleaseYear.ToUpper().Contains(searchText)
-            );
-        }
-
-        /// <summary>
-        /// Allows us to monitor the RecordLibrary records and update based on new/removed items
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e">PropertyChangedEventArgs</param>
-        private void RecordCollection_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(RecordCollection.Records))
+            Record t = e.Item as Record;
+            var searchText = _SearchText.ToUpper();
+            if (t != null)
             {
-                RaisePropertyChanged(nameof(DisplayRecords));
+                e.Accepted = string.IsNullOrEmpty(SearchText) ||
+                (t.Artist ?? "").ToUpper().Contains(searchText) ||
+                (t.ReleaseName ?? "").ToUpper().Contains(searchText) ||
+                (t.ReleaseYear ?? "").ToUpper().Contains(searchText);
             }
         }
 

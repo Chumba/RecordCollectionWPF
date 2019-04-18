@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using RecordLibrary.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace RecordLibrary.ViewModels
 {
     /// <summary>
-    /// This class contains the data connection to the LiteDB data file and handles all create/delete/querying of the database.    ///
+    /// This class contains the data connection to the LiteDB data file and handles all create/delete/querying of the database.
     /// LiteDB works off of a RecordCollection.db file which will either be read from the working directory, or created if not present.
     /// </summary>
     public class RecordCollectionViewmModel : BindableBase
@@ -30,15 +31,13 @@ namespace RecordLibrary.ViewModels
             _LiteDatabase = new LiteDatabase(@"RecordCollection.db");
             _Records = _LiteDatabase.GetCollection<Record>("Records");
             _Random = new Random((int)DateTime.Now.Ticks);
+            Records = (Records)new Records().AddRange(_Records.FindAll()); ;
         }
 
         /// <summary>
         /// The access point for outside clients to the data records
         /// </summary>
-        public List<Record> Records
-        {
-            get => _Records.FindAll().ToList();
-        }
+        public Records Records { get; set; }
 
         /// <summary>
         /// Adds a record to the db
@@ -49,8 +48,9 @@ namespace RecordLibrary.ViewModels
             Task.Run(() =>
             {
                 _Records.Insert(record);
-                RaisePropertyChanged(nameof(Records));
             });
+            Records.Add(record);
+            RaisePropertyChanged(nameof(Records));
         }
 
         /// <summary>
@@ -61,9 +61,10 @@ namespace RecordLibrary.ViewModels
         {
             Task.Run(() =>
             {
-                _Records.Delete(record.Id);
                 RaisePropertyChanged(nameof(Records));
             });
+            _Records.Delete(record.Id);
+            Records.Remove(record);
         }
 
         /// <summary>
@@ -95,29 +96,32 @@ namespace RecordLibrary.ViewModels
         /// <param name="path">The path to a .csv file containing appropriate data.</param>
         public void Import(string path)
         {
+            var newEntries = new List<Record>();
+            using (var reader = new StreamReader(path))
+            {
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var values = line.Split(',');
+
+                    newEntries.Add(new Record
+                    {
+                        Artist = values[0],
+                        ReleaseName = values[1],
+                        ReleaseYear = values[2]
+                    });
+                }
+            }
             Task.Run(() =>
             {
-                var newEntries = new List<Record>();
-                using (var reader = new StreamReader(path))
-                {
-                    while (!reader.EndOfStream)
-                    {
-                        var line = reader.ReadLine();
-                        var values = line.Split(',');
-
-                        newEntries.Add(new Record
-                        {
-                            Artist = values[0],
-                            ReleaseName = values[1],
-                            ReleaseYear = values[2]
-                        });
-                    }
-                }
                 _Records.InsertBulk(newEntries);
-                RaisePropertyChanged(nameof(Records));
             });
+            Records.AddRange(newEntries);
+            RaisePropertyChanged(nameof(Records));
         }
 
         #endregion Constructor and Public Members
     }
+
+    public class Records : ObservableCollection<Record> { }
 }

@@ -15,14 +15,14 @@
                 <Button Command="{Binding AddRecordCommand}" Margin="2, 0">Add</Button>
                 <Button Command="{Binding RemoveRecordCommand}" CommandParameter="{Binding SelectedItem, ElementName=DataGrid}" Margin="2, 0">Remove</Button>
                 <Button Command="{Binding ImportCommand}" Margin="2, 0">Import</Button>
-                <TextBox VerticalAlignment="Center" Width="200" Margin="15, 0" materialDesign:HintAssist.Hint="Search"
-                        Text="{Binding Path=SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
+                <TextBox x:Name="searchTextBox" VerticalAlignment="Center" Width="200" Margin="15, 0" materialDesign:HintAssist.Hint="Search"
+                        Text="{Binding Path=SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=200}" />
             </StackPanel>
         </materialDesign:ColorZone>
         <materialDesign:ColorZone DockPanel.Dock="Bottom" Height="25"  Mode="PrimaryMid">
             <StackPanel  Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Margin="5, 0">Total Records:</TextBlock>
-                <TextBlock Text="{Binding Path=DisplayRecords.Count}"/>
+                <TextBlock Text="{Binding Path=ViewSource.View.Count}"/>
             </StackPanel>
         </materialDesign:ColorZone>
         <Grid>
@@ -30,9 +30,10 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <DataGrid x:Name="DataGrid" ItemsSource="{Binding DisplayRecords, Mode=OneWay}" IsReadOnly="True" AutoGenerateColumns="False" SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <DataGrid x:Name="DataGrid" ItemsSource="{Binding ViewSource.View}" IsReadOnly="True" AutoGenerateColumns="False"
+                      SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" CanUserSortColumns="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Artist" Binding="{Binding Artist}" SortDirection="Ascending" />
+                    <DataGridTextColumn Header="Artist" Binding="{Binding Artist}"/>
                     <DataGridTextColumn Header="Release Name" Binding="{Binding ReleaseName}" />
                     <DataGridTextColumn Header="Release Year" Binding="{Binding ReleaseYear}" />
                 </DataGrid.Columns>
